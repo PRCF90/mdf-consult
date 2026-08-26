@@ -30,11 +30,32 @@
       font-size: 0.9rem;
       color: #475569;
       line-height: 1.4;
-      margin-bottom: 15px;
-      background: rgba(255, 255, 255, 0.75);
+      margin-bottom: 10px;
+      background: rgba(255, 255, 255, 0.85);
       padding: 12px 14px;
       border-radius: 8px;
       border-left: 4px solid #2563eb;
+    }
+
+    /* Estilo do Alerta de Aviso */
+    .alerta-aviso {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background-color: #fefce8;
+      border: 1px solid #fef08a;
+      border-left: 4px solid #eab308;
+      padding: 10px 14px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      font-size: 0.85rem;
+      color: #713f12;
+      line-height: 1.4;
+    }
+
+    .alerta-aviso .icone {
+      font-size: 1.2rem;
+      line-height: 1;
     }
 
     .box { background: white; padding: 16px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
@@ -71,9 +92,17 @@
     <button class="btn-admin-toggle" onclick="tentarAbrirAdmin()" title="Gerenciar Base">⚙️</button>
   </div>
 
-  <!-- DESCRIÇÃO INICIAL ATUALIZADA -->
+  <!-- DESCRIÇÃO INICIAL -->
   <div class="descricao-inicial">
     O MDF Consult é uma ferramenta de comparação de padrões de MDFs, com objetivo de auxiliar na substituição de padrão quando necessário.
+  </div>
+
+  <!-- AVISO COM ÍCONE EM AMARELO -->
+  <div class="alerta-aviso">
+    <span class="icone">⚠️</span>
+    <div>
+      <b>Aviso:</b> Lembrando que esta ferramenta é somente uma sugestão de padrões semelhantes. Não esqueça de comparar nos catálogos físicos!
+    </div>
   </div>
 
   <!-- PAINEL DE CADASTRO E SUGESTÕES (RESTRITO) -->
