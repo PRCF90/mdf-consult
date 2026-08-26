@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MDF CONSULT</title>
-  <style>
+<style>
     * { box-sizing: border-box; }
     
     body { 
@@ -12,417 +6,136 @@
       max-width: 500px; 
       margin: 0 auto; 
       padding: 15px; 
-      /* Imagem de fundo enviada ao GitHub com camada sutil para leitura */
-      background: linear-gradient(rgba(248, 250, 252, 0.90), rgba(248, 250, 252, 0.90)), 
+      
+      /* Fundo escuro sutil para garantir leitura */
+      background: linear-gradient(rgba(15, 23, 42, 0.65), rgba(15, 23, 42, 0.65)), 
                   url('./fundo.jpg');
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
-      color: #1e293b; 
+      color: #ffffff; 
     }
     
-    .header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-    .header-bar h1 { font-size: 1.3rem; margin: 0; color: #0f172a; }
-    .btn-admin-toggle { background: #e2e8f0; border: none; font-size: 1.2rem; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .header-bar h1 { font-size: 1.4rem; margin: 0; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.6); }
+    .btn-admin-toggle { background: rgba(255, 255, 255, 0.15); color: #fff; border: 1px solid rgba(255,255,255,0.3); font-size: 1.2rem; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
 
     .descricao-inicial {
       font-size: 0.9rem;
-      color: #475569;
+      color: #f1f5f9;
       line-height: 1.4;
       margin-bottom: 10px;
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(15, 23, 42, 0.55);
       padding: 12px 14px;
-      border-radius: 8px;
-      border-left: 4px solid #2563eb;
+      border-radius: 12px;
+      border-left: 4px solid #3b82f6;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
     }
 
     .alerta-aviso {
       display: flex;
       align-items: flex-start;
       gap: 10px;
-      background-color: #fefce8;
-      border: 1px solid #fef08a;
-      border-left: 4px solid #eab308;
+      background-color: rgba(254, 240, 138, 0.85);
+      border: 1px solid rgba(254, 240, 138, 0.5);
+      border-left: 4px solid #ca8a04;
       padding: 10px 14px;
-      border-radius: 8px;
+      border-radius: 12px;
       margin-bottom: 15px;
       font-size: 0.85rem;
       color: #713f12;
       line-height: 1.4;
+      backdrop-filter: blur(8px);
     }
 
-    .box { background: white; padding: 16px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    /* CAIXAS PRINCIPAIS SOBREPOSTAS (VIDRO FOSCO) */
+    .box { 
+      background: rgba(255, 255, 255, 0.18); 
+      color: #ffffff; 
+      padding: 16px; 
+      border-radius: 16px; 
+      border: 1px solid rgba(255, 255, 255, 0.25); 
+      margin-bottom: 20px; 
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); 
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .box h2 { color: #ffffff; text-shadow: 0 1px 2px rgba(0,0,0,0.5); margin-top: 0; }
+
     .field { margin-bottom: 15px; }
-    label { font-weight: 600; font-size: 0.9rem; display: block; margin-bottom: 6px; color: #475569; }
-    input[type="text"] { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; outline: none; }
-    input[type="text"]:focus { border-color: #2563eb; }
-    button.btn { width: 100%; padding: 12px; background: #2563eb; color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; }
+    label { font-weight: 600; font-size: 0.9rem; display: block; margin-bottom: 6px; color: #f1f5f9; }
     
-    .card { background: #f8fafc; border: 1px solid #e2e8f0; padding: 10px; border-radius: 8px; display: flex; align-items: center; gap: 12px; margin-top: 10px; cursor: pointer; transition: background 0.2s; }
-    .card:hover { background: #f1f5f9; }
+    /* INPUT TRANSLÚCIDO */
+    input[type="text"] { 
+      width: 100%; 
+      padding: 12px; 
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.4); 
+      border-radius: 8px; 
+      font-size: 0.95rem; 
+      outline: none; 
+      color: #0f172a;
+    }
+    input[type="text"]:focus { 
+      background: #ffffff;
+      border-color: #3b82f6; 
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4);
+    }
+
+    button.btn { width: 100%; padding: 12px; background: #2563eb; color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4); }
+    
+    /* CARDS DE RESULTADOS TRANSLÚCIDOS */
+    .card { 
+      background: rgba(255, 255, 255, 0.25); 
+      border: 1px solid rgba(255, 255, 255, 0.3); 
+      padding: 10px; 
+      border-radius: 10px; 
+      display: flex; 
+      align-items: center; 
+      gap: 12px; 
+      margin-top: 10px; 
+      cursor: pointer; 
+      transition: all 0.2s; 
+      backdrop-filter: blur(6px);
+      color: #ffffff;
+    }
+    .card:hover { 
+      background: rgba(255, 255, 255, 0.35); 
+      transform: translateY(-2px);
+    }
     .card img { width: 60px; height: 60px; object-fit: cover; border-radius: 6px; background: #e2e8f0; }
 
-    .tabs-container { display: flex; border-bottom: 2px solid #e2e8f0; margin-top: 15px; }
-    .tab-btn { flex: 1; padding: 10px; border: none; background: #f1f5f9; cursor: pointer; font-weight: 600; color: #64748b; border-radius: 6px 6px 0 0; font-size: 0.9rem; }
+    /* ABAS TRANSLÚCIDAS */
+    .tabs-container { display: flex; border-bottom: 2px solid rgba(255, 255, 255, 0.2); margin-top: 15px; }
+    .tab-btn { flex: 1; padding: 10px; border: none; background: rgba(255, 255, 255, 0.1); cursor: pointer; font-weight: 600; color: #cbd5e1; border-radius: 6px 6px 0 0; font-size: 0.9rem; }
     .tab-btn.active { background: #2563eb; color: white; }
     .tab-content { display: none; padding-top: 10px; }
     .tab-content.active { display: block; }
 
-    #painel-cadastro { display: none; border-color: #3b82f6; background: #eff6ff; }
-    .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-    .admin-header h2 { margin: 0; font-size: 1.1rem; color: #1e40af; }
-    .btn-close { background: transparent; border: none; font-size: 0.9rem; font-weight: 600; color: #64748b; cursor: pointer; }
-    .hint { font-size: 0.8rem; color: #64748b; margin-top: 4px; }
-    .btn-sugestao-publico { background: #f1f5f9; border: 1px dashed #2563eb; color: #2563eb; width: 100%; padding: 12px; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 10px; text-align: left; }
-    .sugestao-box { background: #fffbeb; border: 1px solid #fde68a; padding: 12px; border-radius: 8px; margin-top: 10px; }
-  </style>
-</head>
-<body>
-
-  <div class="header-bar">
-    <h1>MDF Consult</h1>
-    <button class="btn-admin-toggle" onclick="tentarAbrirAdmin()" title="Gerenciar Base">⚙️</button>
-  </div>
-
-  <!-- Bloco de avisos que oculta no modo admin -->
-  <div id="bloco-avisos">
-    <div class="descricao-inicial">
-      O MDF Consult é uma ferramenta de comparação de padrões de MDFs para auxílio na substituição de padrão por equivalência visual ou de marca.
-    </div>
-
-    <div class="alerta-aviso">
-      <span class="icone">⚠️</span>
-      <div>
-        <b>Aviso:</b> Esta ferramenta fornece sugestões de padrões semelhantes. Sempre valide com amostras ou catálogos físicos dos fabricantes!
-      </div>
-    </div>
-  </div>
-
-  <div class="box" id="painel-cadastro">
-    <div class="admin-header">
-      <h2>Painel do Administrador</h2>
-      <button class="btn-close" onclick="toggleCadastro()">✕ Fechar</button>
-    </div>
+    /* PAINEL DE ADMIN TRANSLÚCIDO */
+    #painel-cadastro { 
+      display: none; 
+      border-color: rgba(59, 130, 246, 0.5); 
+      background: rgba(15, 23, 42, 0.85); 
+    }
+    .admin-header h2 { color: #60a5fa; }
+    .btn-close { color: #94a3b8; }
+    .hint { color: #cbd5e1; }
     
-    <div class="field">
-      <label for="p-name">Nome do Produto com (Código de Grupo):</label>
-      <input type="text" id="p-name" placeholder="Ex: MDF Carvalho Treviso (105)">
-      <div class="hint">Adicione o código entre parênteses para vincular padrões equivalentes.</div>
-    </div>
-    <div class="field">
-      <label for="p-img-url">Link da Imagem (URL):</label>
-      <input type="text" id="p-img-url" placeholder="https://...">
-    </div>
-    <button class="btn" onclick="salvar()">Salvar Produto</button>
-
-    <h2 style="margin-top: 25px; font-size: 1rem; color: #1e40af;">Sugestões Recebidas</h2>
-    <div id="lista-sugestoes-admin">Carregando sugestões...</div>
-
-    <h2 style="margin-top: 25px; font-size: 1rem; color: #1e40af;">Produtos Cadastrados</h2>
-    <div id="lista-produtos">Carregando...</div>
-  </div>
-
-  <div class="box">
-    <h2>Buscar MDF</h2>
-    <div class="field">
-      <label for="search">Digite o nome, código ou fabricante:</label>
-      <input type="text" id="search" oninput="buscar()" placeholder="Ex: Carvalho, Louro Freijó, 105">
-    </div>
-
-    <button class="btn-sugestao-publico" onclick="enviarSugestaoPrompt()">
-      💡 Enviar sugestão de equivalência para o catálogo
-    </button>
-
-    <div class="tabs-container">
-      <button id="btn-tab-main" class="tab-btn active" onclick="mudarAbaResultado('main')">Resultados (<span id="count-main">0</span>)</button>
-      <button id="btn-tab-rel" class="tab-btn" onclick="mudarAbaResultado('rel')">Semelhantes (<span id="count-rel">0</span>)</button>
-    </div>
-
-    <div id="tab-main" class="tab-content active">
-      <div id="main-result"></div>
-    </div>
-
-    <div id="tab-rel" class="tab-content">
-      <div id="related-result"></div>
-    </div>
-  </div>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyDucnW1eKCEcWoaM9TAydfh5Anab4APJ7E",
-      authDomain: "mdf-consult.firebaseapp.com",
-      projectId: "mdf-consult",
-      storageBucket: "mdf-consult.firebasestorage.app",
-      messagingSenderId: "929624150445",
-      appId: "1:929624150445:web:f588dd72ae760fe3db5124",
-      measurementId: "G-9WGYH0HPW1"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    let produtosCache = [];
-    const SENHA_ADMIN = "Rg150224*"; 
-
-    window.tentarAbrirAdmin = tentarAbrirAdmin;
-    window.toggleCadastro = toggleCadastro;
-    window.mudarAbaResultado = mudarAbaResultado;
-    window.salvar = salvar;
-    window.excluir = excluir;
-    window.buscar = buscar;
-    window.enviarSugestaoPrompt = enviarSugestaoPrompt;
-    window.aceitarSugestao = aceitarSugestao;
-    window.excluirSugestao = excluirSugestao;
-    window.selecionarProduto = selecionarProduto;
-
-    window.addEventListener('DOMContentLoaded', () => {
-      atualizarLista();
-      atualizarSugestoesAdmin();
-    });
-
-    function tentarAbrirAdmin() {
-      const senha = prompt("Digite a senha de administrador:");
-      if (senha === null) return;
-      if (senha === SENHA_ADMIN) {
-        toggleCadastro();
-        atualizarSugestoesAdmin();
-      } else {
-        alert("Senha incorreta!");
-      }
+    .btn-sugestao-publico { 
+      background: rgba(255, 255, 255, 0.15); 
+      border: 1px dashed rgba(255, 255, 255, 0.5); 
+      color: #ffffff; 
+      width: 100%; 
+      padding: 12px; 
+      border-radius: 8px; 
+      font-weight: 600; 
+      cursor: pointer; 
+      margin-top: 10px; 
+      text-align: left; 
+      backdrop-filter: blur(4px);
     }
-
-    function toggleCadastro() {
-      const painel = document.getElementById('painel-cadastro');
-      const blocoAvisos = document.getElementById('bloco-avisos');
-      
-      if (painel.style.display === 'block') {
-        painel.style.display = 'none';
-        blocoAvisos.style.display = 'block';
-      } else {
-        painel.style.display = 'block';
-        blocoAvisos.style.display = 'none';
-      }
-    }
-
-    function mudarAbaResultado(aba) {
-      document.getElementById('tab-main').classList.remove('active');
-      document.getElementById('tab-rel').classList.remove('active');
-      document.getElementById('btn-tab-main').classList.remove('active');
-      document.getElementById('btn-tab-rel').classList.remove('active');
-
-      if (aba === 'main') {
-        document.getElementById('tab-main').classList.add('active');
-        document.getElementById('btn-tab-main').classList.add('active');
-      } else {
-        document.getElementById('tab-rel').classList.add('active');
-        document.getElementById('btn-tab-rel').classList.add('active');
-      }
-    }
-
-    async function lerBanco() {
-      try {
-        const querySnapshot = await getDocs(collection(db, "produtos"));
-        const produtos = [];
-        querySnapshot.forEach((doc) => {
-          produtos.push({ id: doc.id, ...doc.data() });
-        });
-        produtosCache = produtos;
-        return produtos;
-      } catch(e) {
-        console.error("Erro ao ler banco:", e);
-        return [];
-      }
-    }
-
-    async function salvar() {
-      const nomeInput = document.getElementById('p-name').value.trim();
-      const fotoUrl = document.getElementById('p-img-url').value.trim();
-
-      if (!nomeInput) {
-        alert('Por favor, informe o nome do produto!');
-        return;
-      }
-
-      const extrairCodigo = nomeInput.match(/\((\d+)\)/);
-      const codigo = extrairCodigo ? extrairCodigo[1] : null;
-
-      try {
-        await addDoc(collection(db, "produtos"), {
-          nome: nomeInput,
-          codigo: codigo,
-          foto: fotoUrl || 'https://via.placeholder.com/150?text=Sem+Foto',
-          criadoEm: new Date()
-        });
-
-        document.getElementById('p-name').value = '';
-        document.getElementById('p-img-url').value = '';
-        
-        await atualizarLista();
-        alert('Produto cadastrado com sucesso!');
-      } catch (erro) {
-        console.error("Erro ao salvar produto: ", erro);
-        alert('Erro ao salvar no banco de dados.');
-      }
-    }
-
-    async function excluir(id) {
-      if (!confirm("Tem certeza que deseja excluir este produto?")) return;
-      try {
-        await deleteDoc(doc(db, "produtos", id));
-        await atualizarLista();
-        buscar();
-      } catch (erro) {
-        console.error("Erro ao excluir: ", erro);
-      }
-    }
-
-    async function atualizarLista() {
-      const banco = await lerBanco();
-      const container = document.getElementById('lista-produtos');
-      
-      if (banco.length === 0) {
-        container.innerHTML = '<p style="color: #64748b;">Nenhum produto cadastrado ainda.</p>';
-        return;
-      }
-
-      container.innerHTML = banco.map(item => `
-        <div class="card">
-          <img src="${item.foto}" onerror="this.src='https://via.placeholder.com/150?text=Erro+Foto'">
-          <div style="flex:1;"><b>${item.nome}</b></div>
-          <button onclick="excluir('${item.id}')" style="background:#ef4444; color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:0.85rem;">Excluir</button>
-        </div>
-      `).join('');
-    }
-
-    async function enviarSugestaoPrompt() {
-      const textoSugestao = prompt("Deixe sua sugestão de equivalência aqui:");
-      if (!textoSugestao || !textoSugestao.trim()) return;
-
-      try {
-        await addDoc(collection(db, "sugestoes"), {
-          mensagem: textoSugestao.trim(),
-          criadoEm: new Date()
-        });
-        alert("Obrigado! Sua sugestão foi enviada para análise.");
-      } catch (e) {
-        console.error("Erro ao enviar sugestão:", e);
-      }
-    }
-
-    async function atualizarSugestoesAdmin() {
-      const container = document.getElementById('lista-sugestoes-admin');
-      if (!container) return;
-
-      try {
-        const querySnapshot = await getDocs(collection(db, "sugestoes"));
-        const sugestoes = [];
-        querySnapshot.forEach((doc) => {
-          sugestoes.push({ id: doc.id, ...doc.data() });
-        });
-
-        if (sugestoes.length === 0) {
-          container.innerHTML = '<p style="color: #64748b; font-size: 0.9rem;">Nenhuma sugestão pendente.</p>';
-          return;
-        }
-
-        container.innerHTML = sugestoes.map(item => `
-          <div class="sugestao-box">
-            <p style="margin: 0 0 8px 0; font-size: 0.95rem;"><b>Sugestão:</b> ${item.mensagem}</p>
-            <div style="display: flex; gap: 8px;">
-              <button onclick="aceitarSugestao('${item.id}', \`${item.mensagem}\`)" style="background:#16a34a; color:white; border:none; padding:6px 10px; border-radius:6px; cursor:pointer; font-size:0.8rem;">Aceitar e Cadastrar</button>
-              <button onclick="excluirSugestao('${item.id}')" style="background:#dc2626; color:white; border:none; padding:6px 10px; border-radius:6px; cursor:pointer; font-size:0.8rem;">Recusar</button>
-            </div>
-          </div>
-        `).join('');
-      } catch (e) {
-        container.innerHTML = '<p style="color: #dc2626; font-size: 0.9rem;">Erro ao carregar sugestões.</p>';
-      }
-    }
-
-    async function aceitarSugestao(id, mensagem) {
-      document.getElementById('p-name').value = mensagem;
-      await excluirSugestao(id);
-      alert("A sugestão foi movida para o formulário de cadastro!");
-    }
-
-    async function excluirSugestao(id) {
-      try {
-        await deleteDoc(doc(db, "sugestoes", id));
-        await atualizarSugestoesAdmin();
-      } catch (e) {
-        console.error("Erro ao remover sugestão:", e);
-      }
-    }
-
-    function buscar() {
-      const texto = document.getElementById('search').value.toLowerCase().trim();
-      const campoPrincipal = document.getElementById('main-result');
-      const campoRelacionado = document.getElementById('related-result');
-
-      campoPrincipal.innerHTML = '';
-      campoRelacionado.innerHTML = '';
-      document.getElementById('count-main').textContent = '0';
-      document.getElementById('count-rel').textContent = '0';
-
-      if (!texto) return;
-
-      const resultados = produtosCache.filter(item => item.nome.toLowerCase().includes(texto));
-
-      document.getElementById('count-main').textContent = resultados.length;
-
-      if (resultados.length > 0) {
-        campoPrincipal.innerHTML = resultados.map(item => `
-          <div class="card" onclick="selecionarProduto('${item.id}')">
-            <img src="${item.foto}" onerror="this.src='https://via.placeholder.com/150?text=Erro+Foto'">
-            <div>
-              <b>${item.nome}</b>
-              ${item.codigo ? `<br><small style="color: #64748b;">Código de Grupo: ${item.codigo}</small>` : ''}
-            </div>
-          </div>
-        `).join('');
-
-        carregarRelacionados(resultados[0]);
-      } else {
-        campoPrincipal.innerHTML = '<p style="color:#64748b; margin-top:10px;">Nenhum produto encontrado.</p>';
-      }
-    }
-
-    function selecionarProduto(id) {
-      const produto = produtosCache.find(p => p.id === id);
-      if (produto) {
-        carregarRelacionados(produto);
-        mudarAbaResultado('rel');
-      }
-    }
-
-    function carregarRelacionados(produto) {
-      const campoRelacionado = document.getElementById('related-result');
-      
-      if (produto.codigo) {
-        const relacionados = produtosCache.filter(item => item.id !== produto.id && item.codigo === produto.codigo);
-        document.getElementById('count-rel').textContent = relacionados.length;
-
-        if (relacionados.length > 0) {
-          campoRelacionado.innerHTML = relacionados.map(rel => `
-            <div class="card">
-              <img src="${rel.foto}" onerror="this.src='https://via.placeholder.com/150?text=Erro+Foto'">
-              <div>
-                <b>${rel.nome}</b>
-                <br><small style="color: #16a34a; font-weight: 600;">Equivalente Direto</small>
-              </div>
-            </div>
-          `).join('');
-        } else {
-          campoRelacionado.innerHTML = `<p style="color:#64748b; margin-top:10px;">Nenhum outro produto cadastrado com o código equivalente (${produto.codigo}).</p>`;
-        }
-      } else {
-        document.getElementById('count-rel').textContent = '0';
-        campoRelacionado.innerHTML = '<p style="color:#64748b; margin-top:10px;">O produto selecionado não possui um código de equivalência cadastrado entre parênteses.</p>';
-      }
-    }
-  </script>
-</body>
-</html>
+    .sugestao-box { background: rgba(254, 243, 199, 0.9); border: 1px solid #fde68a; padding: 12px; border-radius: 8px; margin-top: 10px; color: #78350f; }
+  </style>
