@@ -5,31 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MDF CONSULT</title>
   <style>
-    body { font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; background: #f8fafc; color: #333; }
+    * { box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; max-width: 500px; margin: 0 auto; padding: 15px; background: #f8fafc; color: #1e293b; }
     
     .header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-    .header-bar h1 { font-size: 1.2rem; margin: 0; color: #1e293b; }
-    .btn-admin-toggle { background: #e2e8f0; border: none; font-size: 1.2rem; padding: 8px 12px; border-radius: 50%; cursor: pointer; }
+    .header-bar h1 { font-size: 1.3rem; margin: 0; color: #0f172a; }
+    .btn-admin-toggle { background: #e2e8f0; border: none; font-size: 1.2rem; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
-    .box { background: white; padding: 15px; border-radius: 8px; border: 1px solid #cbd5e1; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .box { background: white; padding: 16px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
     .field { margin-bottom: 15px; }
-    label { font-weight: bold; display: block; margin-bottom: 5px; }
-    input[type="text"], input[type="file"] { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
-    button.btn { width: 100%; padding: 12px; background: #2563eb; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
+    label { font-weight: 600; font-size: 0.9rem; display: block; margin-bottom: 6px; color: #475569; }
+    input[type="text"] { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; outline: none; }
+    input[type="text"]:focus { border-color: #2563eb; }
+    button.btn { width: 100%; padding: 12px; background: #2563eb; color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; }
+    button.btn:active { background: #1d4ed8; }
     
-    .card { background: #f1f5f9; border: 1px solid #e2e8f0; padding: 10px; border-radius: 8px; display: flex; align-items: center; gap: 10px; margin-top: 10px; }
-    .card img { width: 60px; height: 60px; object-fit: cover; border-radius: 4px; background: #ccc; }
+    .card { background: #f1f5f9; border: 1px solid #e2e8f0; padding: 10px; border-radius: 8px; display: flex; align-items: center; gap: 12px; margin-top: 10px; }
+    .card img { width: 60px; height: 60px; object-fit: cover; border-radius: 6px; background: #e2e8f0; }
 
-    .tabs-container { display: flex; border-bottom: 2px solid #cbd5e1; margin-top: 15px; }
-    .tab-btn { flex: 1; padding: 10px; border: none; background: #f1f5f9; cursor: pointer; font-weight: bold; color: #64748b; border-radius: 6px 6px 0 0; }
+    .tabs-container { display: flex; border-bottom: 2px solid #e2e8f0; margin-top: 15px; }
+    .tab-btn { flex: 1; padding: 10px; border: none; background: #f1f5f9; cursor: pointer; font-weight: 600; color: #64748b; border-radius: 6px 6px 0 0; font-size: 0.9rem; }
     .tab-btn.active { background: #2563eb; color: white; }
     .tab-content { display: none; padding-top: 10px; }
     .tab-content.active { display: block; }
 
-    #painel-cadastro { display: none; border-color: #2563eb; background: #f0f9ff; }
+    #painel-cadastro { display: none; border-color: #3b82f6; background: #eff6ff; }
     .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-    .admin-header h2 { margin: 0; font-size: 1.1rem; color: #1e3a8a; }
-    .btn-close { background: transparent; border: none; font-size: 1.1rem; font-weight: bold; color: #64748b; cursor: pointer; }
+    .admin-header h2 { margin: 0; font-size: 1.1rem; color: #1e40af; }
+    .btn-close { background: transparent; border: none; font-size: 0.9rem; font-weight: 600; color: #64748b; cursor: pointer; }
+    
+    .hint { font-size: 0.8rem; color: #64748b; margin-top: 4px; }
   </style>
 </head>
 <body>
@@ -47,17 +52,19 @@
     </div>
     
     <div class="field">
-      <label for="p-name">Nome do Produto com (Número):</label>
-      <input type="text" id="p-name" placeholder="Ex: Camisa Azul (105)">
+      <label for="p-name">Nome do Produto com (Código):</label>
+      <input type="text" id="p-name" placeholder="Ex: MDF Carvalho (105)">
+      <div class="hint">Coloque o código entre parênteses para agrupar produtos iguais.</div>
     </div>
     <div class="field">
-      <label for="p-img">Foto do Produto:</label>
-      <input type="file" id="p-img" accept="image/*">
+      <label for="p-img-url">Link da Imagem (URL):</label>
+      <input type="text" id="p-img-url" placeholder="Ex: https://site.com/imagem.jpg">
+      <div class="hint">Cole o link da foto de um site ou de um site de upload grátis (ex: imgbb.com).</div>
     </div>
     <button class="btn" onclick="salvar()">Salvar Produto</button>
 
-    <h2 style="margin-top: 25px; font-size: 1rem; color: #1e3a8a;">Produtos Cadastrados</h2>
-    <div id="lista-produtos"></div>
+    <h2 style="margin-top: 25px; font-size: 1rem; color: #1e40af;">Produtos Cadastrados</h2>
+    <div id="lista-produtos">Carregando...</div>
   </div>
 
   <!-- ÁREA DE BUSCA COM ABAS -->
@@ -65,12 +72,12 @@
     <h2>Buscar Produto</h2>
     <div class="field">
       <label for="search">Digite o nome ou parte do nome:</label>
-      <input type="text" id="search" oninput="buscar()" placeholder="Ex: Camisa">
+      <input type="text" id="search" oninput="buscar()" placeholder="Ex: Carvalho">
     </div>
 
     <div class="tabs-container">
       <button id="btn-tab-main" class="tab-btn active" onclick="mudarAbaResultado('main')">Principal</button>
-      <button id="btn-tab-rel" class="tab-btn" onclick="mudarAbaResultado('rel')">Relacionado</button>
+      <button id="btn-tab-rel" class="tab-btn" onclick="mudarAbaResultado('rel')">Relacionados</button>
     </div>
 
     <div id="tab-main" class="tab-content active">
@@ -86,7 +93,6 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDucnW1eKCEcWoaM9TAydfh5Anab4APJ7E",
@@ -100,7 +106,6 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    const storage = getStorage(app);
 
     let produtosCache = [];
 
@@ -110,9 +115,9 @@
     window.excluir = excluir;
     window.buscar = buscar;
 
-    window.onload = function() {
+    window.addEventListener('DOMContentLoaded', () => {
       atualizarLista();
-    };
+    });
 
     function toggleCadastro() {
       const painel = document.getElementById('painel-cadastro');
@@ -135,21 +140,26 @@
     }
 
     async function lerBanco() {
-      const querySnapshot = await getDocs(collection(db, "produtos"));
-      const produtos = [];
-      querySnapshot.forEach((doc) => {
-        produtos.push({ id: doc.id, ...doc.data() });
-      });
-      produtosCache = produtos;
-      return produtos;
+      try {
+        const querySnapshot = await getDocs(collection(db, "produtos"));
+        const produtos = [];
+        querySnapshot.forEach((doc) => {
+          produtos.push({ id: doc.id, ...doc.data() });
+        });
+        produtosCache = produtos;
+        return produtos;
+      } catch(e) {
+        console.error("Erro ao ler banco:", e);
+        return [];
+      }
     }
 
     async function salvar() {
-      const nomeInput = document.getElementById('p-name').value;
-      const fotoArquivo = document.getElementById('p-img').files[0];
+      const nomeInput = document.getElementById('p-name').value.trim();
+      const fotoUrl = document.getElementById('p-img-url').value.trim();
 
-      if (!nomeInput || !fotoArquivo) {
-        alert('Por favor, preencha o nome e escolha uma foto!');
+      if (!nomeInput) {
+        alert('Por favor, informe o nome do produto!');
         return;
       }
 
@@ -157,29 +167,26 @@
       const codigo = extrairCodigo ? extrairCodigo[1] : null;
 
       try {
-        const storageRef = ref(storage, produtos/${Date.now()}_${fotoArquivo.name});
-        const uploadResult = await uploadBytes(storageRef, fotoArquivo);
-        const fotoUrl = await getDownloadURL(uploadResult.ref);
-
         await addDoc(collection(db, "produtos"), {
           nome: nomeInput,
           codigo: codigo,
-          foto: fotoUrl,
+          foto: fotoUrl || 'https://via.placeholder.com/150?text=Sem+Foto',
           criadoEm: new Date()
         });
 
         document.getElementById('p-name').value = '';
-        document.getElementById('p-img').value = '';
+        document.getElementById('p-img-url').value = '';
         
         await atualizarLista();
         alert('Produto cadastrado com sucesso!');
       } catch (erro) {
         console.error("Erro ao salvar produto: ", erro);
-        alert('Erro ao salvar no banco de dados.');
+        alert('Erro ao salvar no banco de dados. Verifique sua conexão.');
       }
     }
 
     async function excluir(id) {
+      if (!confirm("Tem certeza que deseja excluir este produto?")) return;
       try {
         await deleteDoc(doc(db, "produtos", id));
         await atualizarLista();
@@ -201,9 +208,9 @@
 
       container.innerHTML = banco.map(item => `
         <div class="card">
-          <img src="${item.foto}">
+          <img src="${item.foto}" onerror="this.src='https://via.placeholder.com/150?text=Erro+Foto'">
           <div style="flex:1;"><b>${item.nome}</b></div>
-          <button onclick="excluir('${item.id}')" style="background:#ef4444; color:white; border:none; padding:6px 12px; border-radius:4px; cursor:pointer;">Excluir</button>
+          <button onclick="excluir('${item.id}')" style="background:#ef4444; color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:0.85rem;">Excluir</button>
         </div>
       `).join('');
     }
@@ -224,7 +231,7 @@
       if (encontrado) {
         campoPrincipal.innerHTML = `
           <div class="card">
-            <img src="${encontrado.foto}">
+            <img src="${encontrado.foto}" onerror="this.src='https://via.placeholder.com/150?text=Erro+Foto'">
             <div><b>${encontrado.nome}</b></div>
           </div>`;
 
@@ -234,18 +241,18 @@
           if (relacionados.length > 0) {
             campoRelacionado.innerHTML = relacionados.map(rel => `
               <div class="card">
-                <img src="${rel.foto}">
+                <img src="${rel.foto}" onerror="this.src='https://via.placeholder.com/150?text=Erro+Foto'">
                 <div><b>${rel.nome}</b></div>
               </div>
             `).join('');
           } else {
-            campoRelacionado.innerHTML = '<p style="color:#64748b;">Nenhum outro produto possui o código (' + encontrado.codigo + ').</p>';
+            campoRelacionado.innerHTML = '<p style="color:#64748b; margin-top:10px;">Nenhum outro produto possui o código (' + encontrado.codigo + ').</p>';
           }
         } else {
-          campoRelacionado.innerHTML = '<p style="color:#64748b;">Este produto não tem código entre parênteses.</p>';
+          campoRelacionado.innerHTML = '<p style="color:#64748b; margin-top:10px;">Este produto não tem código entre parênteses.</p>';
         }
       } else {
-        campoPrincipal.innerHTML = '<p style="color:#64748b;">Nenhum produto encontrado.</p>';
+        campoPrincipal.innerHTML = '<p style="color:#64748b; margin-top:10px;">Nenhum produto encontrado.</p>';
       }
     }
   </script>
