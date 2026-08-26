@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MDF CONSULT</title>
+  <style>
+    body { font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; background: #f8fafc; color: #333; }
+    
+    /* Cabeçalho com botão de cadastro */
+    .header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+    .header-bar h1 { font-size: 1.2rem; margin: 0; color: #1e293b; }
+    .btn-admin-toggle { background: #e2e8f0; border: none; font-size: 1.2rem; padding: 8px 12px; border-radius: 50%; cursor: pointer; }
+
+    .box { background: white; padding: 15px; border-radius: 8px; border: 1px solid #cbd5e1; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .field { margin-bottom: 15px; }
+    label { font-weight: bold; display: block; margin-bottom: 5px; }
+    input[type="text"], input[type="file"] { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+    button.btn { width: 100%; padding: 12px; background: #2563eb; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
+    
+    .card { background: #f1f5f9; border: 1px solid #e2e8f0; padding: 10px; border-radius: 8px; display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+    .card img { width: 60px; height: 60px; object-fit: cover; border-radius: 4px; background: #ccc; }
+
+    /* Estilo das Abas de Resultado */
+    .tabs-container { display: flex; border-bottom: 2px solid #cbd5e1; margin-top: 15px; }
+    .tab-btn { flex: 1; padding: 10px; border: none; background: #f1f5f9; cursor: pointer; font-weight: bold; color: #64748b; border-radius: 6px 6px 0 0; }
+    .tab-btn.active { background: #2563eb; color: white; }
+    .tab-content { display: none; padding-top: 10px; }
+    .tab-content.active { display: block; }
+
+    /* Painel oculto de cadastro */
+    #painel-cadastro { display: none; border-color: #2563eb; background: #f0f9ff; }
+    .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+    .admin-header h2 { margin: 0; font-size: 1.1rem; color: #1e3a8a; }
+    .btn-close { background: transparent; border: none; font-size: 1.1rem; font-weight: bold; color: #64748b; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <div class="header-bar">
+    <h1>Catálogo de Produtos</h1>
+    <button class="btn-admin-toggle" onclick="toggleCadastro()" title="Gerenciar Base">⚙️</button>
+  </div>
+
+  <!-- PAINEL DE CADASTRO -->
+  <div class="box" id="painel-cadastro">
+    <div class="admin-header">
+      <h2>Cadastrar Novo Produto</h2>
+      <button class="btn-close" onclick="toggleCadastro()">✕ Fechar</button>
+    </div>
+    
+    <div class="field">
+      <label for="p-name">Nome do Produto com (Número):</label>
+      <input type="text" id="p-name" placeholder="Ex: Camisa Azul (105)">
+    </div>
+    <div class="field">
+      <label for="p-img">Foto do Produto:</label>
+      <input type="file" id="p-img" accept="image/*">
+    </div>
+    <button class="btn" onclick="salvar()">Salvar Produto</button>
+
+    <h2 style="margin-top: 25px; font-size: 1rem; color: #1e3a8a;">Produtos Cadastrados</h2>
+    <div id="lista-produtos"></div>
+  </div>
+
+  <!-- ÁREA DE BUSCA COM ABAS -->
+  <div class="box">
+    <h2>Buscar Produto</h2>
+    <div class="field">
+      <label for="search">Digite o nome ou parte do nome:</label>
+      <input type="text" id="search" oninput="buscar()" placeholder="Ex: Camisa">
+    </div>
+
+    <!-- ABAS PARA OS RESULTADOS -->
+    <div class="tabs-container">
+      <button id="btn-tab-main" class="tab-btn active" onclick="mudarAbaResultado('main')">Principal</button>
+      <button id="btn-tab-rel" class="tab-btn" onclick="mudarAbaResultado('rel')">Relacionado</button>
+    </div>
+
+    <!-- CONTEÚDO DA ABA PRINCIPAL -->
+    <div id="tab-main" class="tab-content active">
+      <div id="main-result"></div>
+    </div>
+
+    <!-- CONTEÚDO DA ABA RELACIONADO -->
+    <div id="tab-rel" class="tab-content">
+      <div id="related-result"></div>
+    </div>
+  </div>
+
+  <script>
+    window.onload = function() {
+      atualizarLista();
+    };
+
+    function toggleCadastro() {
+      const painel = document.getElementById('painel-cadastro');
+      painel.style.display = painel.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function mudarAbaResultado(aba) {
+      document.getElementById('tab-main').classList.remove('active');
+      document.getElementById('tab-rel').classList.remove('active');
+      document.getElementById('btn-tab-main').classList.remove('active');
+      document.getElementById('btn-tab-rel').classList.remove('active');
+
+      if (aba === 'main') {
+        document.getElementById('tab-main').classList.add('active');
+        document.getElementById('btn-tab-main').classList.add('active');
+      } else {
+        document.getElementById('tab-rel').classList.add('active');
+        document.getElementById('btn-tab-rel').classList.add('active');
+      }
+    }
+
+    function lerBanco() {
+      return JSON.parse(localStorage.getItem('meus_produtos') || '[]');
+    }
+
+    function salvar() {
+      const nomeInput = document.getElementById('p-name').value;
+      const fotoInput = document.getElementById('p-img').files[0];
+
+      if (!nomeInput || !fotoInput) {
+        alert('Por favor, preencha o nome e escolha uma foto!');
+        return;
+      }
+
+      const extrairCodigo = nomeInput.match(/\((\d+)\)/);
+      const codigo = extrairCodigo ? extrairCodigo[1] : null;
+
+      const leitor = new FileReader();
+      leitor.onload = function(e) {
+        const banco = lerBanco();
+        banco.push({
+          id: Date.now(),
+          nome: nomeInput,
+          codigo: codigo,
+          foto: e.target.result
+        });
+
+        localStorage.setItem('meus_produtos', JSON.stringify(banco));
+        document.getElementById('p-name').value = '';
+        document.getElementById('p-img').value = '';
+        
+        atualizarLista();
+        alert('Produto cadastrado com sucesso!');
+      };
+
+      leitor.readAsDataURL(fotoInput);
+    }
+
+    function excluir(id) {
+      let banco = lerBanco().filter(item => item.id !== id);
+      localStorage.setItem('meus_produtos', JSON.stringify(banco));
+      atualizarLista();
+      buscar();
+    }
+
+    function atualizarLista() {
+      const banco = lerBanco();
+      const container = document.getElementById('lista-produtos');
+      
+      if (banco.length === 0) {
+        container.innerHTML = '<p style="color: #64748b;">Nenhum produto cadastrado ainda.</p>';
+        return;
+      }
+
+      container.innerHTML = banco.map(item => `
+        <div class="card">
+          <img src="${item.foto}">
+          <div style="flex:1;"><b>${item.nome}</b></div>
+          <button onclick="excluir(${item.id})" style="background:#ef4444; color:white; border:none; padding:6px 12px; border-radius:4px; cursor:pointer;">Excluir</button>
+        </div>
+      `).join('');
+    }
+
+    /* FUNÇÃO DE BUSCA ATUALIZADA */
+    function buscar() {
+      const texto = document.getElementById('search').value.toLowerCase().trim();
+      const campoPrincipal = document.getElementById('main-result');
+      const campoRelacionado = document.getElementById('related-result');
+
+      campoPrincipal.innerHTML = '';
+      campoRelacionado.innerHTML = '';
+
+      if (!texto) return;
+
+      const banco = lerBanco();
+      const encontrado = banco.find(item => item.nome.toLowerCase().includes(texto));
+
+      if (encontrado) {
+        campoPrincipal.innerHTML = `
+          <div class="card">
+            <img src="${encontrado.foto}">
+            <div><b>${encontrado.nome}</b></div>
+          </div>`;
+
+        if (encontrado.codigo) {
+          // Captura TODOS os itens com o mesmo código (usando filter)
+          const relacionados = banco.filter(item => item.id !== encontrado.id && item.codigo === encontrado.codigo);
+
+          if (relacionados.length > 0) {
+            campoRelacionado.innerHTML = relacionados.map(rel => `
+              <div class="card">
+                <img src="${rel.foto}">
+                <div><b>${rel.nome}</b></div>
+              </div>
+            `).join('');
+          } else {
+            campoRelacionado.innerHTML = '<p style="color:#64748b;">Nenhum outro produto possui o código (' + encontrado.codigo + ').</p>';
+          }
+        } else {
+          campoRelacionado.innerHTML = '<p style="color:#64748b;">Este produto não tem código entre parênteses.</p>';
+        }
+      } else {
+        campoPrincipal.innerHTML = '<p style="color:#64748b;">Nenhum produto encontrado.</p>';
+      }
+    }
+  </script>
+</body>
+</html>
