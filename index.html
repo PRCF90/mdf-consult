@@ -35,19 +35,21 @@
     .btn-close { background: transparent; border: none; font-size: 0.9rem; font-weight: 600; color: #64748b; cursor: pointer; }
     
     .hint { font-size: 0.8rem; color: #64748b; margin-top: 4px; }
+    .btn-sugestao-publico { background: #f1f5f9; border: 1px dashed #2563eb; color: #2563eb; width: 100%; padding: 12px; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 10px; text-align: left; }
+    .sugestao-box { background: #fffbeb; border: 1px solid #fde68a; padding: 12px; border-radius: 8px; margin-top: 10px; }
   </style>
 </head>
 <body>
 
   <div class="header-bar">
     <h1>Catálogo de Produtos</h1>
-    <button class="btn-admin-toggle" onclick="toggleCadastro()" title="Gerenciar Base">⚙️</button>
+    <button class="btn-admin-toggle" onclick="tentarAbrirAdmin()" title="Gerenciar Base">⚙️</button>
   </div>
 
-  <!-- PAINEL DE CADASTRO -->
+  <!-- PAINEL DE CADASTRO E SUGESTÕES (RESTRITO) -->
   <div class="box" id="painel-cadastro">
     <div class="admin-header">
-      <h2>Cadastrar Novo Produto</h2>
+      <h2>Painel do Administrador</h2>
       <button class="btn-close" onclick="toggleCadastro()">✕ Fechar</button>
     </div>
     
@@ -63,6 +65,9 @@
     </div>
     <button class="btn" onclick="salvar()">Salvar Produto</button>
 
+    <h2 style="margin-top: 25px; font-size: 1rem; color: #1e40af;">Sugestões de Equivalência Recebidas</h2>
+    <div id="lista-sugestoes-admin">Carregando sugestões...</div>
+
     <h2 style="margin-top: 25px; font-size: 1rem; color: #1e40af;">Produtos Cadastrados</h2>
     <div id="lista-produtos">Carregando...</div>
   </div>
@@ -74,6 +79,11 @@
       <label for="search">Digite o nome ou parte do nome:</label>
       <input type="text" id="search" oninput="buscar()" placeholder="Ex: Carvalho">
     </div>
+
+    <!-- Botão público de sugestão -->
+    <button class="btn-sugestao-publico" onclick="enviarSugestaoPrompt()">
+      Deixe sua sugestão de equivalência aqui:
+    </button>
 
     <div class="tabs-container">
       <button id="btn-tab-main" class="tab-btn active" onclick="mudarAbaResultado('main')">Principal</button>
@@ -108,16 +118,33 @@
     const db = getFirestore(app);
 
     let produtosCache = [];
+    const SENHA_ADMIN = "Rg150224*"; // Sua nova senha configurada
 
+    window.tentarAbrirAdmin = tentarAbrirAdmin;
     window.toggleCadastro = toggleCadastro;
     window.mudarAbaResultado = mudarAbaResultado;
     window.salvar = salvar;
     window.excluir = excluir;
     window.buscar = buscar;
+    window.enviarSugestaoPrompt = enviarSugestaoPrompt;
+    window.aceitarSugestao = aceitarSugestao;
+    window.excluirSugestao = excluirSugestao;
 
     window.addEventListener('DOMContentLoaded', () => {
       atualizarLista();
+      atualizarSugestoesAdmin();
     });
+
+    function tentarAbrirAdmin() {
+      const senha = prompt("Digite a senha de administrador:");
+      if (senha === null) return;
+      if (senha === SENHA_ADMIN) {
+        toggleCadastro();
+        atualizarSugestoesAdmin();
+      } else {
+        alert("Senha incorreta!");
+      }
+    }
 
     function toggleCadastro() {
       const painel = document.getElementById('painel-cadastro');
@@ -213,6 +240,69 @@
           <button onclick="excluir('${item.id}')" style="background:#ef4444; color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:0.85rem;">Excluir</button>
         </div>
       `).join('');
+    }
+
+    // --- FUNÇÕES DE SUGESTÃO DE EQUIVALÊNCIA ---
+    async function enviarSugestaoPrompt() {
+      const textoSugestao = prompt("Deixe sua sugestão de equivalência aqui:");
+      if (!textoSugestao || !textoSugestao.trim()) return;
+
+      try {
+        await addDoc(collection(db, "sugestoes"), {
+          mensagem: textoSugestao.trim(),
+          criadoEm: new Date()
+        });
+        alert("Obrigado! Sua sugestão foi enviada para análise do administrador.");
+      } catch (e) {
+        console.error("Erro ao enviar sugestão:", e);
+        alert("Erro ao enviar a sugestão. Tente novamente.");
+      }
+    }
+
+    async function atualizarSugestoesAdmin() {
+      const container = document.getElementById('lista-sugestoes-admin');
+      if (!container) return;
+
+      try {
+        const querySnapshot = await getDocs(collection(db, "sugestoes"));
+        const sugestoes = [];
+        querySnapshot.forEach((doc) => {
+          sugestoes.push({ id: doc.id, ...doc.data() });
+        });
+
+        if (sugestoes.length === 0) {
+          container.innerHTML = '<p style="color: #64748b; font-size: 0.9rem;">Nenhuma sugestão pendente.</p>';
+          return;
+        }
+
+        container.innerHTML = sugestoes.map(item => `
+          <div class="sugestao-box">
+            <p style="margin: 0 0 8px 0; font-size: 0.95rem;"><b>Sugestão:</b> ${item.mensagem}</p>
+            <div style="display: flex; gap: 8px;">
+              <button onclick="aceitarSugestao('${item.id}', \`${item.mensagem}\`)" style="background:#16a34a; color:white; border:none; padding:6px 10px; border-radius:6px; cursor:pointer; font-size:0.8rem;">Aceitar e Cadastrar</button>
+              <button onclick="excluirSugestao('${item.id}')" style="background:#dc2626; color:white; border:none; padding:6px 10px; border-radius:6px; cursor:pointer; font-size:0.8rem;">Recusar</button>
+            </div>
+          </div>
+        `).join('');
+      } catch (e) {
+        console.error("Erro ao carregar sugestões:", e);
+        container.innerHTML = '<p style="color: #dc2626; font-size: 0.9rem;">Erro ao carregar sugestões.</p>';
+      }
+    }
+
+    async function aceitarSugestao(id, mensagem) {
+      document.getElementById('p-name').value = mensagem;
+      await excluirSugestao(id);
+      alert("A sugestão foi movida para o campo de cadastro de produtos!");
+    }
+
+    async function excluirSugestao(id) {
+      try {
+        await deleteDoc(doc(db, "sugestoes", id));
+        await atualizarSugestoesAdmin();
+      } catch (e) {
+        console.error("Erro ao remover sugestão:", e);
+      }
     }
 
     function buscar() {
