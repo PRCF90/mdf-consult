@@ -87,7 +87,7 @@
 
     <div class="tabs-container">
       <button id="btn-tab-main" class="tab-btn active" onclick="mudarAbaResultado('main')">Principal</button>
-      <button id="btn-tab-rel" class="tab-btn" onclick="mudarAbaResultado('rel')">Relacionados</button>
+      <button id="btn-tab-rel" class="tab-btn" onclick="mudarAbaResultado('rel')">Semelhantes</button>
     </div>
 
     <div id="tab-main" class="tab-content active">
@@ -118,7 +118,7 @@
     const db = getFirestore(app);
 
     let produtosCache = [];
-    const SENHA_ADMIN = "Rg150224*"; // Sua nova senha configurada
+    const SENHA_ADMIN = "Rg150224*";
 
     window.tentarAbrirAdmin = tentarAbrirAdmin;
     window.toggleCadastro = toggleCadastro;
@@ -336,7 +336,7 @@
               </div>
             `).join('');
           } else {
-            campoRelacionado.innerHTML = '<p style="color:#64748b; margin-top:10px;">Nenhum outro produto possui o código (' + encontrado.codigo + ').</p>';
+            campoRelacionado.innerHTML = '<p style="color:#64748b; margin-top:10px;">Nenhum outro produto semelhante possui o código (' + encontrado.codigo + ').</p>';
           }
         } else {
           campoRelacionado.innerHTML = '<p style="color:#64748b; margin-top:10px;">Este produto não tem código entre parênteses.</p>';
