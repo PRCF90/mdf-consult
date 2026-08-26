@@ -88,135 +88,15 @@
     </div>
   </div>
 
-  <script>
-    window.onload = function() {
-      atualizarLista();
-    };
-
-    function toggleCadastro() {
-      const painel = document.getElementById('painel-cadastro');
-      painel.style.display = painel.style.display === 'block' ? 'none' : 'block';
-    }
-
-    function mudarAbaResultado(aba) {
-      document.getElementById('tab-main').classList.remove('active');
-      document.getElementById('tab-rel').classList.remove('active');
-      document.getElementById('btn-tab-main').classList.remove('active');
-      document.getElementById('btn-tab-rel').classList.remove('active');
-
-      if (aba === 'main') {
-        document.getElementById('tab-main').classList.add('active');
-        document.getElementById('btn-tab-main').classList.add('active');
-      } else {
-        document.getElementById('tab-rel').classList.add('active');
-        document.getElementById('btn-tab-rel').classList.add('active');
-      }
-    }
-
-    function lerBanco() {
-      return JSON.parse(localStorage.getItem('meus_produtos') || '[]');
-    }
-
-    function salvar() {
-      const nomeInput = document.getElementById('p-name').value;
-      const fotoInput = document.getElementById('p-img').files[0];
-
-      if (!nomeInput || !fotoInput) {
-        alert('Por favor, preencha o nome e escolha uma foto!');
-        return;
-      }
-
-      const extrairCodigo = nomeInput.match(/\((\d+)\)/);
-      const codigo = extrairCodigo ? extrairCodigo[1] : null;
-
-      const leitor = new FileReader();
-      leitor.onload = function(e) {
-        const banco = lerBanco();
-        banco.push({
-          id: Date.now(),
-          nome: nomeInput,
-          codigo: codigo,
-          foto: e.target.result
-        });
-
-        localStorage.setItem('meus_produtos', JSON.stringify(banco));
-        document.getElementById('p-name').value = '';
-        document.getElementById('p-img').value = '';
-        
-        atualizarLista();
-        alert('Produto cadastrado com sucesso!');
-      };
-
-      leitor.readAsDataURL(fotoInput);
-    }
-
-    function excluir(id) {
-      let banco = lerBanco().filter(item => item.id !== id);
-      localStorage.setItem('meus_produtos', JSON.stringify(banco));
-      atualizarLista();
-      buscar();
-    }
-
-    function atualizarLista() {
-      const banco = lerBanco();
-      const container = document.getElementById('lista-produtos');
-      
-      if (banco.length === 0) {
-        container.innerHTML = '<p style="color: #64748b;">Nenhum produto cadastrado ainda.</p>';
-        return;
-      }
-
-      container.innerHTML = banco.map(item => `
-        <div class="card">
-          <img src="${item.foto}">
-          <div style="flex:1;"><b>${item.nome}</b></div>
-          <button onclick="excluir(${item.id})" style="background:#ef4444; color:white; border:none; padding:6px 12px; border-radius:4px; cursor:pointer;">Excluir</button>
-        </div>
-      `).join('');
-    }
-
-    /* FUNÇÃO DE BUSCA ATUALIZADA */
-    function buscar() {
-      const texto = document.getElementById('search').value.toLowerCase().trim();
-      const campoPrincipal = document.getElementById('main-result');
-      const campoRelacionado = document.getElementById('related-result');
-
-      campoPrincipal.innerHTML = '';
-      campoRelacionado.innerHTML = '';
-
-      if (!texto) return;
-
-      const banco = lerBanco();
-      const encontrado = banco.find(item => item.nome.toLowerCase().includes(texto));
-
-      if (encontrado) {
-        campoPrincipal.innerHTML = `
-          <div class="card">
-            <img src="${encontrado.foto}">
-            <div><b>${encontrado.nome}</b></div>
-          </div>`;
-
-        if (encontrado.codigo) {
-          // Captura TODOS os itens com o mesmo código (usando filter)
-          const relacionados = banco.filter(item => item.id !== encontrado.id && item.codigo === encontrado.codigo);
-
-          if (relacionados.length > 0) {
-            campoRelacionado.innerHTML = relacionados.map(rel => `
-              <div class="card">
-                <img src="${rel.foto}">
-                <div><b>${rel.nome}</b></div>
-              </div>
-            `).join('');
-          } else {
-            campoRelacionado.innerHTML = '<p style="color:#64748b;">Nenhum outro produto possui o código (' + encontrado.codigo + ').</p>';
-          }
-        } else {
-          campoRelacionado.innerHTML = '<p style="color:#64748b;">Este produto não tem código entre parênteses.</p>';
-        }
-      } else {
-        campoPrincipal.innerHTML = '<p style="color:#64748b;">Nenhum produto encontrado.</p>';
-      }
-    }
-  </script>
+ // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyDucnW1eKCEcWoaM9TAydfh5Anab4APJ7E",
+  authDomain: "mdf-consult.firebaseapp.com",
+  projectId: "mdf-consult",
+  storageBucket: "mdf-consult.firebasestorage.app",
+  messagingSenderId: "929624150445",
+  appId: "1:929624150445:web:f588dd72ae760fe3db5124",
+  measurementId: "G-9WGYH0HPW1"
+};
 </body>
 </html>
